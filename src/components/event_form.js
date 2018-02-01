@@ -5,6 +5,7 @@ class EventForm extends React.Component {
     super(props);
     this.state = {
       name: '',
+      url: '',
       organizer: '',
       location: '',
       startTime: '',
@@ -18,48 +19,53 @@ class EventForm extends React.Component {
 
   handleNameChange = (event) => {
     this.setState({name: event.target.value});
-    console.log(event.target.value);
+  }
+
+  handleUrlChange = (event) => {
+    this.setState({url: event.target.value});
   }
 
   handleOrganizerChange = (event) => {
     this.setState({organizer: event.target.value});
-    console.log(event.target.value);
   }
 
   handleLocationChange = (event) => {
     this.setState({location: event.target.value});
-    console.log(event.target.value);
   }
 
   handleStartTimeChange = (event) => {
     this.setState({startTime: event.target.value});
-    console.log(event.target.value);
   }
 
   handleEndTimeChange = (event) => {
     this.setState({endTime: event.target.value});
-    console.log(event.target.value);
   }
 
   handlePriceChange = (event) => {
     this.setState({price: event.target.value});
-    console.log(event.target.value);
   }
 
   handleCategoriesChange = (event) => {
     this.setState({categories: event.target.value});
-    console.log(event.target.value);
   }
 
   handleRSVPChange = (event) => {
     this.setState({rsvp: event.target.value});
-    console.log(event.target.value);
   }
 
   handleSubmit = (event) => {
+    const data = this.state
     console.log('The following event has been submitted: ' + this.state);
     event.preventDefault();
-  }
+		fetch('http://localhost:3000/events/new', {
+			method: 'POST',
+			body: JSON.stringify({data}),
+			headers: {
+				"Content-Type": "application/json"
+			}
+		}).then(res => console.log(res))
+	}
+
 
   render() {
     return (
@@ -68,17 +74,22 @@ class EventForm extends React.Component {
       <br></br>
         <label>
           Name*:
-          <input type="text" value={this.state.name} onChange={this.handleNameChange} />
+          <input type="text" value={this.state.name} onChange={this.handleNameChange} required/>
+        </label>
+        <br></br>
+        <label>
+          Event URL:
+          <input type="text" value={this.state.url} onChange={this.handleUrlChange} />
         </label>
         <br></br>
         <label>
           Organizer*:
-          <input type="text" value={this.state.organizer} onChange={this.handleOrganizerChange} />
+          <input type="text" value={this.state.organizer} onChange={this.handleOrganizerChange} required/>
         </label>
         <br></br>
         <label>
           Location (as address)*:
-          <input type="text" value={this.state.location} onChange={this.handleLocationChange} />
+          <input type="text" value={this.state.location} onChange={this.handleLocationChange} required/>
         </label>
         <br></br>
         <label>
@@ -93,7 +104,7 @@ class EventForm extends React.Component {
         <br></br>
         <label>
           Price ($USD) *:
-          <input type="text" value={this.state.price} onChange={this.handlePriceChange} />
+          <input type="text" value={this.state.price} onChange={this.handlePriceChange} required/>
         </label>
         <br></br>
         <label>
